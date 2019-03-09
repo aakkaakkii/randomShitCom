@@ -6,11 +6,56 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <link href="{% static 'app/css/main.css'%}" rel="stylesheet">
+    <link href="{% static 'app/css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/css/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
 
 </head>
 <body>
-it works
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <div id="site_title" class="text-center mt-4 mb-4">Random Shit</div>
+
+            <div class="justify-content-center align-content-center text-center">
+                <iframe id="video_iframe" style="margin: auto" width="1120" height="630"
+                        src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1">
+                </iframe>
+            </div>
+            <div>
+                <div id="reload">Reload</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'vendor/js/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/js/popper/popper.min.js' %}"></script>
+<script src="{% static 'vendor/js/bootstrap/bootstrap.min.js' %}"></script>
+<script>
+
+
+    $("#reload").click(function () {
+        let iframe = document.querySelector("#video_iframe");
+
+        fetch(window.location.href + "get_id")
+            .then(
+                function (response) {
+                    if (response.status !== 200) {
+                        return;
+                    }
+
+                    response.json().then(function (data) {
+                        iframe.setAttribute("src", "https://www.youtube.com/embed/"+ data.videoId +"?autoplay=1")
+                    });
+                }
+            )
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            });
+    })
+</script>
 </body>
 </html>
